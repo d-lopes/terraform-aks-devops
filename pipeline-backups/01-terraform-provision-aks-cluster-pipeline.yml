@@ -13,7 +13,7 @@ variables:
 
 # Stage-1: Terraform Validate Stage
 ## Step-1: Publish Artifacts to Pipeline (Pipeline artifacts provide a way to share files between stages in a pipeline or between different pipelines. )
-## Step-2: Install Latest Terraform (0.13.5) (Ideally not needed if we use default Ubuntu Agents)
+## Step-2: Install Latest Terraform (0.14.8) (Ideally not needed if we use default Ubuntu Agents)
 ## Step-3: Validate Terraform Manifests (terraform init, terraform validate)
 
 stages:
@@ -38,7 +38,7 @@ stages:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-manifests'
           backendType: 'azurerm'
-          backendServiceArm: 'terraform-aks-azurerm-svc-con'
+          backendServiceArm: 'aks-via-terraform-svc-conn'
           backendAzureRmResourceGroupName: 'terraform-storage-rg'
           backendAzureRmStorageAccountName: 'terraformstatedlps'
           backendAzureRmContainerName: 'tfstatefiles'
