@@ -25,3 +25,12 @@ resource "azurerm_postgresql_server" "pgsqlserver" {
     Environment = var.environment
   }
 }
+
+# Allow access to Azure services (so that we can expose this service in k8s)
+resource "azurerm_postgresql_firewall_rule" "aks-access" {
+  name                = "pgsql-${var.environment}-server-${var.environment}-aks-access"
+  resource_group_name = azurerm_resource_group.aks_rg.name
+  server_name         = azurerm_postgresql_server.pgsqlserver.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
+}
