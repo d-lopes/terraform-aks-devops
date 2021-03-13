@@ -97,8 +97,8 @@ stages:
                 command: 'plan'
                 workingDirectory: '$(Pipeline.Workspace)/terraform-manifests-out'
                 environmentServiceName: 'aks-via-terraform-svc-conn'
-                commandOptions: '-var ssh_public_key=$(sshkey.secureFilePath) -var environment=$(DEV_ENVIRONMENT) -out $(DEV_ENVIRONMENT)-$(Build.BuildId).out'
-                publishPlanResults: '$(DEV_ENVIRONMENT)-$(Build.BuildId).out'
+                commandOptions: '-var ssh_public_key=$(sshkey.secureFilePath) -var environment=$(DEV_ENVIRONMENT) -out $(Pipeline.Workspace)/terraform-manifests-out/$(DEV_ENVIRONMENT)-$(Build.BuildId).plan'
+                publishPlanResults: '$(DEV_ENVIRONMENT)-$(Build.BuildId).plan'
                 allowTelemetryCollection: false
             - task: TerraformCLI@0
               displayName: Terraform Apply
@@ -106,5 +106,5 @@ stages:
                 command: 'apply'
                 workingDirectory: '$(Pipeline.Workspace)/terraform-manifests-out'
                 environmentServiceName: 'aks-via-terraform-svc-conn'
-                commandOptions: '$(DEV_ENVIRONMENT)-$(Build.BuildId).out'
+                commandOptions: '$(Pipeline.Workspace)/terraform-manifests-out/$(DEV_ENVIRONMENT)-$(Build.BuildId).plan'
                 allowTelemetryCollection: false
