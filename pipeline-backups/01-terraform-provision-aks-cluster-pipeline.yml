@@ -20,6 +20,7 @@ stages:
 - stage: TerraformValidate
   jobs:
     - job: TerraformValidateJob
+      displayName: Validate Terraform Manifest
       continueOnError: false
       steps:
       - task: PublishPipelineArtifact@1
@@ -74,6 +75,10 @@ stages:
               name: sshkey
               inputs:
                 secureFile: 'aksprodsshkey.pub'
+            - task: TerraformInstaller@0
+              displayName: Terraform Install
+              inputs:
+                terraformVersion: 'latest'
             - task: TerraformCLI@0
               displayName: Terraform Init
               inputs:
@@ -101,5 +106,5 @@ stages:
                 command: 'apply'
                 workingDirectory: '$(Pipeline.Workspace)/terraform-manifests-out'
                 environmentServiceName: 'aks-via-terraform-svc-conn'
-                commandOptions: '$(DEV_ENVIRONMENT)-$(Build.BuildId).out'
+                commandOptions: 'input=false $(DEV_ENVIRONMENT)-$(Build.BuildId).out'
                 allowTelemetryCollection: false
