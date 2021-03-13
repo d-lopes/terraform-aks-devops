@@ -7,9 +7,7 @@ pool:
 # Define Variables for Environments
 variables:
 - name: DEV_ENVIRONMENT
-  value: dev
-- name: QA_ENVIRONMENT
-  value: qa  
+  value: dev 
 
 # Stage-1: Terraform Validate Stage
 ## Step-1: Publish Artifacts to Pipeline (Pipeline artifacts provide a way to share files between stages in a pipeline or between different pipelines. )
@@ -52,15 +50,15 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-manifests'
           allowTelemetryCollection: false
 
-# Stage-2: Deploy Stages for Dev & Qa
+# Stage-2: Deploy Stage for Dev
+#   Deployment: Deploy Dev AKS Cluster
+##    Step-1: Download SSH Secure File
+##    Step-2: Terraform Initialize (stores terraform state files in Azure Storage Account)
+##    Step-3: Terraform Plan (Create Plan)
+##    Step-4: Terraform Apply (Use the plan created in previous step)
 
 - stage: DeployAKSClusters
   jobs:
-#   Deployment-1: Deploy Dev AKS Cluster
-##    Step-1.1: Download SSH Secure File
-##    Step-1.2: Terraform Initialize (stores terraform state files in Azure Storage Account)
-##    Step-1.3: Terraform Plan (Create Plan)
-##    Step-1.4: Terraform Apply (Use the plan created in previous step)
     - deployment: DeployDevAKSCluster
       displayName: Deploy Development AKS Cluster
       pool:
@@ -97,7 +95,8 @@ stages:
                 command: 'plan'
                 workingDirectory: '$(Pipeline.Workspace)/terraform-manifests-out'
                 environmentServiceName: 'aks-via-terraform-svc-conn'
-                commandOptions: '-var ssh_public_key=$(sshkey.secureFilePath) -var environment=$(DEV_ENVIRONMENT) -out $(Pipeline.Workspace)/terraform-manifests-out/$(DEV_ENVIRONMENT)-$(Build.BuildId).plan'
+                commandOptions: '-var ssh_public_key=$(sshkey.secureFilePath) -var environment=$(DEV_ENVIRONMENT)'
+                publishPlanResults: '$(DEV_ENVIRONMENT)-$(Build.BuildId).plan'
                 allowTelemetryCollection: false
             - task: TerraformCLI@0
               displayName: Terraform Apply
@@ -105,5 +104,5 @@ stages:
                 command: 'apply'
                 workingDirectory: '$(Pipeline.Workspace)/terraform-manifests-out'
                 environmentServiceName: 'aks-via-terraform-svc-conn'
-                commandOptions: '$(Pipeline.Workspace)/terraform-manifests-out/$(DEV_ENVIRONMENT)-$(Build.BuildId).plan'
+                commandOptions: '$(DEV_ENVIRONMENT)-$(Build.BuildId).plan'
                 allowTelemetryCollection: false
