@@ -6,10 +6,4 @@ resource "azurerm_postgresql_database" "projectdb" {
   server_name         = azurerm_postgresql_server.pgsqlserver.name
   charset             = "UTF8"
   collation           = "English_United States.1252"
-
-  # PostgreSQL DB Tags 
-  tags = {
-    Environment = var.environment
-    Project = "Example Project"
-  }
 }
