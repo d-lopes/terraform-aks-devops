@@ -49,3 +49,17 @@ variable "windows_admin_password" {
   description = "This variable defines the Windows admin password k8s Worker nodes"  
 }
 
+# PostgreSQL Admin Username
+variable "pgsql_admin_username" {
+  type = string
+  default = "pgsqladmin"
+  description = "This variable defines admin username for the PostgreSQL Server"  
+}
+
+# PostgreSQL Admin Password
+variable "pgsql_admin_password" {
+  type = string
+  default = "H@Sh1CoR3!1234"
+  description = "This variable defines the admin password for the PostgreSQL Server"  
+}
+
