@@ -13,7 +13,7 @@ variables:
 
 # Stage-1: Terraform Validate Stage
 ## Step-1: Publish Artifacts to Pipeline (Pipeline artifacts provide a way to share files between stages in a pipeline or between different pipelines. )
-## Step-2: Install Latest Terraform (0.14.8) (Ideally not needed if we use default Ubuntu Agents)
+## Step-2: Install Latest Terraform (0.14.8) (we use default Ubuntu Agents which have only 0.14.7 installed)
 ## Step-3: Validate Terraform Manifests (terraform init, terraform validate)
 
 stages:
@@ -106,5 +106,5 @@ stages:
                 command: 'apply'
                 workingDirectory: '$(Pipeline.Workspace)/terraform-manifests-out'
                 environmentServiceName: 'aks-via-terraform-svc-conn'
-                commandOptions: 'input=false $(DEV_ENVIRONMENT)-$(Build.BuildId).out'
+                commandOptions: '$(DEV_ENVIRONMENT)-$(Build.BuildId).out'
                 allowTelemetryCollection: false
