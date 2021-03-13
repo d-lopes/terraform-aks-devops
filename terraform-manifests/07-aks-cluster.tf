@@ -1,5 +1,5 @@
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
-  dns_prefix          = "${azurerm_resource_group.aks_rg.name}"
+  dns_prefix          = azurerm_resource_group.aks_rg.name
   location            = azurerm_resource_group.aks_rg.location
   name                = "${azurerm_resource_group.aks_rg.name}-cluster"
   resource_group_name = azurerm_resource_group.aks_rg.name
