@@ -1,4 +1,4 @@
-# Create PostgreSQL Server 
+# Create shared PostgreSQL Server 
 
 resource "azurerm_postgresql_server" "pgsqlserver" {
   name                = "pgsql-${var.environment}-server"
